@@ -1,36 +1,48 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# After-Hours Drop-Off Defender
 
-## Getting Started
+This demo captures after-hours return evidence (plate, timestamp, GPS, and 4 photos) and provides a staff-only admin panel.
 
-First, run the development server:
+## Security model
+
+- Customer submissions require a valid `bookingToken` + matching `licensePlate`.
+- Admin data access requires `STAFF_ADMIN_TOKEN`.
+- Evidence image endpoint (`/getImage`) also requires `staffToken`.
+- Reports and tokens are purged after 5 years via daily Convex cron.
+
+## Required environment variables
+
+Create `.env.local` with:
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+CONVEX_DEPLOYMENT=...
+NEXT_PUBLIC_CONVEX_URL=...
+NEXT_PUBLIC_CONVEX_SITE_URL=...
+STAFF_ADMIN_TOKEN=your-strong-staff-token
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Run locally
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+npm install
+npx convex dev
+npm run dev
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Staff workflow
 
-## Learn More
+1. Open `/admin`.
+2. Enter `STAFF_ADMIN_TOKEN`.
+3. Issue a booking token using booking reference + plate.
+4. Send that booking token to customer (SMS/email/check-in flow).
+5. Review submitted reports, maps, and photos in `/admin`.
 
-To learn more about Next.js, take a look at the following resources:
+## Customer workflow
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+1. Open `/` (QR code recommended).
+2. Enter booking token and license plate.
+3. Capture all 4 required photos.
+4. Allow geolocation and submit.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Retention
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- Reports and expired booking tokens older than 5 years are deleted daily by Convex cron (`convex/crons.ts`).
