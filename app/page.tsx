@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import { useState, useRef, FormEvent } from "react";
 import { useMutation } from "convex/react";
 import { api } from "@/convex/_generated/api";
@@ -56,13 +55,6 @@ const customerSteps = [
   "You will see a success message confirming the return record.",
 ];
 
-const adminSteps = [
-  "Open the admin panel at /admin.",
-  "Sign in with the staff admin token.",
-  "Find the latest drop-off report by plate and timestamp.",
-  "Open map link and photos to verify handover condition.",
-  "Use the record as your evidence pack for disputes, insurer claims, and chargebacks.",
-];
 
 export default function Home() {
   const [bookingToken, setBookingToken] = useState("");
@@ -312,22 +304,6 @@ export default function Home() {
               </ol>
             </section>
 
-            <section className="glass rounded-[2rem] p-6 md:p-7 shadow-xl">
-              <div className="flex items-center justify-between gap-3 mb-4">
-                <h2 className="text-base font-black tracking-tight">Admin Panel Instructions</h2>
-                <Link
-                  href="/admin"
-                  className="inline-flex items-center rounded-full border border-accent/25 bg-accent/10 px-3 py-1 text-xs font-bold text-accent hover:bg-accent/20 transition-colors"
-                >
-                  Open /admin
-                </Link>
-              </div>
-              <ol className="space-y-2 text-sm text-foreground/80 list-decimal pl-5">
-                {adminSteps.map((step) => (
-                  <li key={step}>{step}</li>
-                ))}
-              </ol>
-            </section>
           </aside>
         </div>
 
