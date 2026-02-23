@@ -15,7 +15,12 @@
       "Bash(git -C \"D:\\\\Coding\\\\after-hours-drop-off\\\\.claude\\\\worktrees\\\\priceless-almeida\" status)",
       "Bash(git -C \"D:\\\\Coding\\\\after-hours-drop-off\\\\.claude\\\\worktrees\\\\priceless-almeida\" diff --stat)",
       "Bash(git add:*)",
-      "Bash(git commit:*)"
+      "Bash(git commit:*)",
+      "Bash(vercel:*)",
+      "mcp__Claude_Preview__preview_start",
+      "Bash(where:*)",
+      "Bash(npm install:*)",
+      "Bash(timeout 10 npm run dev:*)"
     ]
   }
 }

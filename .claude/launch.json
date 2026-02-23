@@ -3,15 +3,16 @@
   "configurations": [
     {
       "name": "Next.js Dev",
-      "runtimeExecutable": "npm",
-      "runtimeArgs": ["run", "dev"],
+      "runtimeExecutable": "cmd.exe",
+      "runtimeArgs": ["/c", "npm", "run", "dev"],
       "port": 3000
     },
     {
       "name": "Convex Dev",
-      "runtimeExecutable": "npx",
-      "runtimeArgs": ["convex", "dev"],
+      "runtimeExecutable": "cmd.exe",
+      "runtimeArgs": ["/c", "npx", "convex", "dev"],
       "port": 3210
     }
-  ]
+  ],
+  "autoVerify": true
 }

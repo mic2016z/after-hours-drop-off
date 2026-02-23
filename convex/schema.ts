@@ -13,6 +13,12 @@ export default defineSchema({
     .index("by_token", ["token"])
     .index("by_expiresAt", ["expiresAt"]),
 
+  authorizedStaff: defineTable({
+    email: v.string(),
+    addedBy: v.string(),
+    addedAt: v.number(),
+  }).index("by_email", ["email"]),
+
   reports: defineTable({
     bookingTokenId: v.optional(v.id("bookingTokens")),
     bookingRef: v.optional(v.string()),
