@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useRef, FormEvent } from "react";
+import { useSearchParams } from "next/navigation";
 import { useMutation } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import type { Id } from "@/convex/_generated/dataModel";
@@ -49,15 +50,16 @@ const CheckIcon = () => (
 
 const customerSteps = [
   "Scan the QR code on the after-hours lockbox.",
-  "Enter your booking token and vehicle license plate.",
+  "Enter your vehicle license plate.",
   "Take 4 required photos: front, back, left, and right.",
   "Enable location when prompted and submit the report.",
   "You will see a success message confirming the return record.",
 ];
 
-
 export default function Home() {
-  const [bookingToken, setBookingToken] = useState("");
+  const searchParams = useSearchParams();
+  const bookingToken = searchParams.get("token") ?? "";
+
   const [plate, setPlate] = useState("");
   const [files, setFiles] = useState<(File | null)[]>([null, null, null, null]);
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
@@ -87,7 +89,7 @@ export default function Home() {
     const trimmedPlate = plate.trim();
 
     if (!trimmedToken) {
-      setErrorMessage("Please enter your booking token");
+      setErrorMessage("Invalid link — please scan the QR code again.");
       setStatus("error");
       return;
     }
@@ -133,7 +135,6 @@ export default function Home() {
       });
 
       setStatus("success");
-      setBookingToken("");
       setPlate("");
       setFiles([null, null, null, null]);
       inputRefs.current.forEach((el) => {
@@ -171,24 +172,6 @@ export default function Home() {
         <div className="grid gap-8 lg:grid-cols-[1.25fr,1fr]">
           <section className="glass rounded-[2.5rem] p-10 md:p-12 shadow-2xl">
             <form onSubmit={handleSubmit} className="space-y-10">
-              <div className="space-y-4">
-                <label
-                  htmlFor="bookingToken"
-                  className="text-[10px] font-black uppercase tracking-[0.2em] text-foreground/30 ml-2"
-                >
-                  Booking Token
-                </label>
-                <input
-                  id="bookingToken"
-                  type="text"
-                  value={bookingToken}
-                  onChange={(e) => setBookingToken(e.target.value)}
-                  placeholder="Paste token from your booking confirmation"
-                  className="apple-input h-14 w-full rounded-[1.25rem] px-6 text-sm font-bold placeholder:text-foreground/20 focus:outline-none"
-                  autoComplete="off"
-                />
-              </div>
-
               <div className="space-y-4">
                 <label
                   htmlFor="plate"
@@ -303,7 +286,6 @@ export default function Home() {
                 ))}
               </ol>
             </section>
-
           </aside>
         </div>
 

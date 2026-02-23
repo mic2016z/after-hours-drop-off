@@ -4,6 +4,7 @@ import { FormEvent, useMemo, useState } from "react";
 import { useMutation, useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import type { Id } from "@/convex/_generated/dataModel";
+import { QRCodeSVG } from "qrcode.react";
 
 const CONVEX_SITE_URL = process.env.NEXT_PUBLIC_CONVEX_SITE_URL ?? "";
 
@@ -158,9 +159,27 @@ export default function AdminPage() {
                 </button>
               </form>
               {newToken && (
-                <div className="mt-4 rounded-lg border border-zinc-700 bg-zinc-900 p-3">
-                  <p className="text-xs text-zinc-400 mb-1">Share this token with customer:</p>
-                  <p className="font-mono text-xs break-all text-emerald-300">{newToken}</p>
+                <div className="mt-4 rounded-lg border border-zinc-700 bg-zinc-900 p-4 flex flex-col sm:flex-row gap-6 items-start">
+                  <div className="bg-white p-3 rounded-lg shrink-0">
+                    <QRCodeSVG
+                      value={`https://after-hours-drop-off.vercel.app?token=${newToken}`}
+                      size={160}
+                      level="M"
+                    />
+                  </div>
+                  <div className="space-y-2 min-w-0">
+                    <p className="text-sm font-semibold text-zinc-200">QR Code ready to print</p>
+                    <p className="text-xs text-zinc-400">
+                      Place this QR code on the after-hours lockbox. Customers scan it to open the drop-off form with their token pre-filled.
+                    </p>
+                    <p className="text-[10px] text-zinc-500 font-mono break-all">{`https://after-hours-drop-off.vercel.app?token=${newToken}`}</p>
+                    <button
+                      onClick={() => window.print()}
+                      className="mt-1 rounded-md border border-zinc-600 px-3 py-1.5 text-xs font-medium text-zinc-300 hover:bg-zinc-800"
+                    >
+                      Print QR Code
+                    </button>
+                  </div>
                 </div>
               )}
             </section>
