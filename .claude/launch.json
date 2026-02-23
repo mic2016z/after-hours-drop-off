@@ -1,0 +1,18 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "Next.js Dev",
+      "runtimeExecutable": "cmd.exe",
+      "runtimeArgs": ["/c", "npm", "run", "dev"],
+      "port": 3000
+    },
+    {
+      "name": "Convex Dev",
+      "runtimeExecutable": "cmd.exe",
+      "runtimeArgs": ["/c", "npx", "convex", "dev"],
+      "port": 3210
+    }
+  ],
+  "autoVerify": true
+}

@@ -1,9 +1,10 @@
 "use client";
 
-import { FormEvent, useMemo, useState } from "react";
+import { FormEvent, useRef, useMemo, useState } from "react";
 import { useMutation, useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import type { Id } from "@/convex/_generated/dataModel";
+import { QRCodeCanvas } from "qrcode.react";
 
 const CONVEX_SITE_URL = process.env.NEXT_PUBLIC_CONVEX_SITE_URL ?? "";
 
@@ -33,6 +34,17 @@ export default function AdminPage() {
   const [newToken, setNewToken] = useState("");
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
+  const qrRef = useRef<HTMLCanvasElement>(null);
+
+  const handleDownloadQR = () => {
+    const canvas = qrRef.current;
+    if (!canvas) return;
+    const url = canvas.toDataURL("image/png");
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `qr-${newToken.slice(0, 8)}.png`;
+    a.click();
+  };
 
   const createBookingToken = useMutation(api.reports.createBookingToken);
   const revokeBookingToken = useMutation(api.reports.revokeBookingToken);
@@ -158,9 +170,36 @@ export default function AdminPage() {
                 </button>
               </form>
               {newToken && (
-                <div className="mt-4 rounded-lg border border-zinc-700 bg-zinc-900 p-3">
-                  <p className="text-xs text-zinc-400 mb-1">Share this token with customer:</p>
-                  <p className="font-mono text-xs break-all text-emerald-300">{newToken}</p>
+                <div className="mt-4 rounded-lg border border-zinc-700 bg-zinc-900 p-4 flex flex-col sm:flex-row gap-6 items-start">
+                  <div className="bg-white p-3 rounded-lg shrink-0">
+                    <QRCodeCanvas
+                      ref={qrRef}
+                      value={`https://after-hours-drop-off.vercel.app?token=${newToken}`}
+                      size={160}
+                      level="M"
+                    />
+                  </div>
+                  <div className="space-y-2 min-w-0">
+                    <p className="text-sm font-semibold text-zinc-200">QR Code ready to use</p>
+                    <p className="text-xs text-zinc-400">
+                      Place this QR code on the after-hours lockbox. Customers scan it to open the drop-off form with their token pre-filled.
+                    </p>
+                    <p className="text-[10px] text-zinc-500 font-mono break-all">{`https://after-hours-drop-off.vercel.app?token=${newToken}`}</p>
+                    <div className="flex gap-2 flex-wrap pt-1">
+                      <button
+                        onClick={handleDownloadQR}
+                        className="rounded-md bg-emerald-600 px-3 py-1.5 text-xs font-medium text-white hover:bg-emerald-500"
+                      >
+                        Save as PNG
+                      </button>
+                      <button
+                        onClick={() => window.print()}
+                        className="rounded-md border border-zinc-600 px-3 py-1.5 text-xs font-medium text-zinc-300 hover:bg-zinc-800"
+                      >
+                        Print
+                      </button>
+                    </div>
+                  </div>
                 </div>
               )}
             </section>

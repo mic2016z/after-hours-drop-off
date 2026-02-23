@@ -1,0 +1,26 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git push:*)",
+      "Bash(git -C \"D:\\\\Coding\\\\after-hours-drop-off\" remote -v)",
+      "Bash(gh auth status:*)",
+      "Bash(gh api:*)",
+      "Bash(gh repo create:*)",
+      "Bash(git -C \"D:\\\\Coding\\\\after-hours-drop-off\" remote set-url origin https://github.com/mic2016z/after-hours-drop-off.git)",
+      "Bash(git -C \"D:\\\\Coding\\\\after-hours-drop-off\" push -u origin main)",
+      "Bash(git -C \"D:\\\\Coding\\\\after-hours-drop-off\" branch -a)",
+      "Bash(git -C \"D:\\\\Coding\\\\after-hours-drop-off\" push -u origin master)",
+      "Bash(git -C \"D:\\\\Coding\\\\after-hours-drop-off\" push origin claude/priceless-almeida)",
+      "Bash(gh pr create:*)",
+      "Bash(git -C \"D:\\\\Coding\\\\after-hours-drop-off\\\\.claude\\\\worktrees\\\\priceless-almeida\" status)",
+      "Bash(git -C \"D:\\\\Coding\\\\after-hours-drop-off\\\\.claude\\\\worktrees\\\\priceless-almeida\" diff --stat)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(vercel:*)",
+      "mcp__Claude_Preview__preview_start",
+      "Bash(where:*)",
+      "Bash(npm install:*)",
+      "Bash(timeout 10 npm run dev:*)"
+    ]
+  }
+}
